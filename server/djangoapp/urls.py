@@ -1,7 +1,7 @@
 from django.urls import path
 from django.conf.urls.static import static
 from django.conf import settings
-from .views import about, contact, get_dealerships, registration_request, login_request, logout_request
+from .views import about, contact, get_dealerships, registration_request, login_request, logout_request, get_dealer_details
 
 app_name = 'djangoapp'
 urlpatterns = [
@@ -27,5 +27,9 @@ urlpatterns = [
     # path for dealer reviews view
 
     # path for add a review view
+
+
+    # path for dealer reviews view
+    path('dealer/<int:dealer_id>/', get_dealer_details, name='dealer_details'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
