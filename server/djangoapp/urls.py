@@ -1,8 +1,7 @@
 from django.urls import path
 from django.conf.urls.static import static
 from django.conf import settings
-from .views import about, contact, get_dealerships, registration_request, login_request, logout_request, get_dealer_details
-
+from .views import about, contact, get_dealerships, registration_request, login_request, logout_request, get_dealer_details, add_review
 app_name = 'djangoapp'
 urlpatterns = [
     # path('navbar/', navbar_view, name='navbar'),
@@ -25,11 +24,10 @@ urlpatterns = [
     path(route='', view=get_dealerships, name='index'),
 
     # path for dealer reviews view
+    path('dealer/<int:dealer_id>/', get_dealer_details, name='dealer_details'),
 
     # path for add a review view
+    path(route='dealer/<int:dealer_id>/add_review', view=add_review, name='add_review')
 
-
-    # path for dealer reviews view
-    path('dealer/<int:dealer_id>/', get_dealer_details, name='dealer_details'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
