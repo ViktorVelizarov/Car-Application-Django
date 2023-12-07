@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 # from .models import related models
 from .models import CarModel
 # from .restapis import related methods
-from .restapis import get_dealers_from_cf, get_dealer_reviews_from_cf
+from .restapis import get_dealers_from_cf1, get_dealers_from_cf2,  get_dealer_reviews_from_cf
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from datetime import datetime
@@ -83,7 +83,7 @@ def get_dealerships(request):
     if request.method == "GET":
         url = "https://us-south.functions.appdomain.cloud/api/v1/web/0c78f7d5-cc52-4e73-a9dd-4a99bac9722c/dealership-package/get-dealership.json"
         # Get dealers from the URL
-        dealerships = get_dealers_from_cf(url)
+        dealerships = get_dealers_from_cf1(url)
         # Concat all dealer's short name
         dealer_names = ' '.join([dealer.short_name for dealer in dealerships])
         # Return a list of dealer short name
@@ -99,7 +99,7 @@ def get_dealer_details(request, dealer_id):
         url_ds = f"https://us-south.functions.appdomain.cloud/api/v1/web/0c78f7d5-cc52-4e73-a9dd-4a99bac9722c/dealership-package/get-dealership.json?state={dealer_id}"
         # Get dealers from the URL
         context = {
-            "dealer": get_dealers_from_cf(url_ds)[0],
+            "dealer": get_dealers_from_cf2(url_ds)[0],
             "reviews": get_dealer_reviews_from_cf(url_r, dealer_id),
         }
         
@@ -113,7 +113,7 @@ def add_review(request, dealer_id):
         # Get dealers from the URL
         context = {
             "cars": CarModel.objects.all(),
-            "dealer": get_dealers_from_cf(url)[0],
+            "dealer": get_dealers_from_cf2(url)[0],
         }
         print(context)
         return render(request, 'djangoapp/add_review.html', context)
