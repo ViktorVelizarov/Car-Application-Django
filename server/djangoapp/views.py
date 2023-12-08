@@ -83,18 +83,17 @@ def get_dealerships(request):
     if request.method == "GET":
         url = "https://us-south.functions.appdomain.cloud/api/v1/web/0c78f7d5-cc52-4e73-a9dd-4a99bac9722c/dealership-package/get-dealership.json"
         # Get dealers from the URL
-        dealerships = get_dealers_from_cf1(url)
-        # Concat all dealer's short name
-        dealer_names = ' '.join([dealer.short_name for dealer in dealerships])
-        # Return a list of dealer short name
-        return HttpResponse(dealer_names)
+        context = {
+            "dealerships": get_dealers_from_cf1(url),
+        }
+        return render(request, 'djangoapp/index.html', context)
 
 
 # Create a `get_dealer_details` view to render the reviews of a dealer
 # def get_dealer_details(request, dealer_id):
 def get_dealer_details(request, dealer_id):
     if request.method == "GET":
-        dealer_id = 15
+
         url_r = f"https://us-south.functions.appdomain.cloud/api/v1/web/0c78f7d5-cc52-4e73-a9dd-4a99bac9722c/dealership-package/get-review.json?id={dealer_id}"
         url_ds = f"https://us-south.functions.appdomain.cloud/api/v1/web/0c78f7d5-cc52-4e73-a9dd-4a99bac9722c/dealership-package/get-dealership.json?state={dealer_id}"
         # Get dealers from the URL
@@ -112,8 +111,8 @@ def add_review(request, dealer_id):
         url = f"https://service.eu.apiconnect.ibmcloud.com/gws/apigateway/api/a9220b6d6b26f1eb3b657a98770b743616f7d4cd223b89cd1ca4e88ab49bdb92/api/dealership?dealerId={dealer_id}"
         # Get dealers from the URL
         context = {
-            "cars": CarModel.objects.all(),
-            "dealer": get_dealers_from_cf2(url)[0],
+            #"cars": CarModel.objects.all(),
+            #"dealer": get_dealers_from_cf2(url)[0],
         }
         print(context)
         return render(request, 'djangoapp/add_review.html', context)
